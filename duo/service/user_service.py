@@ -39,5 +39,27 @@ class UserService:
                 "User already exists."
                 " Please try again with a different username."
             )
-        return UserModel.from_entity(self.user_repo.add(user_model.to_entity()))\
+        return UserModel.from_entity(self.user_repo.add(user_model.to_entity())) \
+            .to_response()
+
+    def remove(self, user_id: int) -> None:
+        user = self.user_repo.get(user_id)
+        if user is None:
+            raise UserNotFoundException(
+                "User not found."
+                " Please try again with a valid user."
+            )
+        self.user_repo.remove(user)
+
+    def update(self, user_id: int, user_model: UserModel) -> UserModel:
+        user = UserModel.from_entity(self.user_repo.get(user_id))
+        if user is None:
+            raise UserNotFoundException(
+                "User not found."
+                " Please try again with a valid user."
+            )
+
+        user.update(user_model)
+
+        return UserModel.from_entity(self.user_repo.update(user.to_entity())) \
             .to_response()

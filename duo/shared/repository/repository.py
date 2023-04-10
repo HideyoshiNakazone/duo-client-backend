@@ -6,9 +6,8 @@ import datetime
 
 
 class Repository:
-    __slots__ = ['engine', 'entity', 'metadata']
 
-    entity: Entity
+    entity = Entity
 
     def __init__(self, engine: Engine, entity: Entity = None):
         self.engine = engine
@@ -19,11 +18,11 @@ class Repository:
         self.entity.metadata.create_all(self.engine)
         self.metadata = self.entity.__table__
 
-    def get(self, id: int) -> Entity:
+    def get(self, id: int) -> entity:
         with Session(self.engine) as session:
             return session.get(self.entity, id)
 
-    def get_all(self, **kwargs) -> list[Entity]:
+    def get_all(self, **kwargs) -> list[entity]:
         with Session(self.engine) as session:
             query = session.query(self.entity)
 
@@ -37,7 +36,7 @@ class Repository:
 
         return query.all()
 
-    def add(self, entity: Entity) -> Entity:
+    def add(self, entity: entity) -> entity:
         with Session(self.engine, expire_on_commit=False) as session:
             session.add(entity)
 
@@ -45,13 +44,13 @@ class Repository:
 
         return entity
 
-    def remove(self, entity: Entity) -> None:
+    def remove(self, entity: entity) -> None:
         with Session(self.engine) as session:
             session.delete(entity)
 
             session.commit()
 
-    def update(self, entity: Entity) -> Entity:
+    def update(self, entity: entity) -> entity:
         entity.modified_at = datetime.datetime.utcnow()
         with Session(self.engine, expire_on_commit=False) as session:
             session.merge(entity)

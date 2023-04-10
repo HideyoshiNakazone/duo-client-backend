@@ -6,9 +6,9 @@ from sqlalchemy import Column, String
 class UserEntity(Entity):
     __tablename__ = 'user'
 
-    username = Column(String(20), nullable=False)
     fullname = Column(String(50), nullable=False)
-    email = Column(String(50), nullable=False)
+    username = Column(String(20), nullable=False, unique=True)
+    email = Column(String(50), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
 
     def __repr__(self):

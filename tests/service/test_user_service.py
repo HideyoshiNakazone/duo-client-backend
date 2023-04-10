@@ -18,6 +18,42 @@ class TestUserService(unittest.TestCase):
         self.assertIsInstance(service, UserService)
 
     @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    def test_get_users(self, mock_user_repo):
+        service = UserService(mock_user_repo)
+
+        mock_user_repo.get_all.return_value = [
+            UserEntity(
+                username='john_doe',
+                fullname='John Doe',
+                email='john_doe@email.com',
+                password='passwd'
+            ),
+            UserEntity(
+                username='maria_doe',
+                fullname='Maria Doe',
+                email='maria_doe@email.com',
+                password='passwd'
+            )
+        ]
+
+        expected_users = [
+            UserModel(
+                username='john_doe',
+                fullname='John Doe',
+                email='john_doe@email.com',
+                password=None
+            ),
+            UserModel(
+                username='maria_doe',
+                fullname='Maria Doe',
+                email='maria_doe@email.com',
+                password=None
+            )
+        ]
+
+        self.assertEqual(expected_users, service.get_users())
+
+    @mock.patch('duo.service.user_service.UserRepository', spec=True)
     def test_login(self, mock_user_repo):
         service = UserService(mock_user_repo)
 
@@ -73,6 +109,56 @@ class TestUserService(unittest.TestCase):
             service.register(user).username,
             'john_doe'
         )
+
+    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    def test_remove(self, mock_user_repo):
+        service = UserService(mock_user_repo)
+
+        mock_user_repo.get.return_value = None
+        with self.assertRaises(UserNotFoundException):
+            service.remove(1)
+
+        mock_user_repo.get.return_value = UserEntity(
+            username='john_doe',
+            fullname='John Doe',
+            email='john_doe@email.com',
+            password='password'
+        )
+        self.assertIsNone(service.remove(1))
+
+    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    def test_update(self, mock_user_repo):
+        service = UserService(mock_user_repo)
+
+        user = UserEntity(
+            id=1,
+            username='john_doe',
+            fullname='John Doe',
+            email='john_doe@email.com',
+            password='password'
+        )
+
+        expected_entity = UserModel(
+            id=1,
+            username='test',
+            fullname='John Doe',
+            email='john_doe@email.com',
+            password='password'
+        )
+
+        mock_user_repo.get.return_value = None
+        with self.assertRaises(UserNotFoundException):
+            service.update(1, expected_entity)
+
+        mock_user_repo.get.return_value = user
+        mock_user_repo.update.return_value = expected_entity
+
+        updated_user = service.update(1, expected_entity)
+
+        self.assertEqual(expected_entity.id, updated_user.id)
+        self.assertEqual(expected_entity.username, updated_user.username)
+        self.assertEqual(expected_entity.fullname, updated_user.fullname)
+        self.assertEqual(expected_entity.email, updated_user.email)
 
 
 if __name__ == '__main__':

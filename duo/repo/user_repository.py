@@ -9,14 +9,14 @@ from sqlalchemy.orm import Session
 class UserRepository(Repository):
     entity = UserEntity
 
-    def get_user_by_username(self, username) -> UserEntity | None:
+    def get_user_by_username(self, username) -> entity | None:
         with Session(self.engine) as session:
             return session.query(self.entity).filter_by(username=username).first()
 
-    def get_user_by_fullname(self, fullname) -> UserEntity | None:
+    def get_user_by_fullname(self, fullname) -> entity | None:
         with Session(self.engine) as session:
             return session.query(self.entity).filter_by(fullname=fullname).first()
 
-    def get_user_by_email(self, email) -> UserEntity | None:
+    def get_user_by_email(self, email) -> entity | None:
         with Session(self.engine) as session:
             return session.query(self.entity).filter_by(email=email).first()

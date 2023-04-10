@@ -61,6 +61,29 @@ class TestUserModel(unittest.TestCase):
 
         self.assertIsInstance(user, UserModel)
 
+        self.assertIsNone(UserModel.from_entity(None))
+
+    def test_update(self):
+        user = UserModel(
+            username='john_doe',
+            fullname='John Doe',
+            email='john_doe@email.com',
+            password='password'
+        )
+
+        expected_user = UserModel(
+            username='test',
+            fullname='John Doe',
+            email='john_doe@email.com',
+            password='password'
+        )
+
+        user.update(expected_user)
+
+        self.assertEqual(user.username, expected_user.username)
+        self.assertEqual(user.fullname, expected_user.fullname)
+        self.assertEqual(user.email, expected_user.email)
+
     def test_to_response(self):
         user = UserModel(
             username='john_doe',
