@@ -1,7 +1,7 @@
-
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.shared.exception.user_already_exists_exception import UserAlreadyExistsException
 from duo.shared.exception.user_not_found_exception import UserNotFoundException
+from duo.response.user.user_response import UserResponse
 from duo.repo.user_repository import UserRepository
 from duo.service.auth_service import AuthService
 from duo.model.user_model import UserModel
@@ -18,7 +18,7 @@ class UserService:
         users = self.user_repo.get_all(**kwargs)
         return [UserModel.from_entity(user).to_response() for user in users]
 
-    def login(self, username: str, password: str) -> UserModel:
+    def login(self, username: str, password: str) -> UserResponse:
         user = self.user_repo.get_user_by_username(username)
         if user is None:
             raise UserNotFoundException(
@@ -32,18 +32,29 @@ class UserService:
                 "Invalid Credentials."
                 " Please try again with a valid username and password."
             )
+            
+        return UserResponse(
+            user=userData.to_response(),
+            access_token=self.auth_service.generate_auth_token(userData.id),
+            refresh_token=self.auth_service.generate_refresh_token(userData.id)
+        )
 
-        return userData.to_response()
-
-    def register(self, user_model: UserModel) -> UserModel:
+    def register(self, user_model: UserModel) -> UserResponse:
         user = self.user_repo.get_user_by_username(user_model.username)
         if user is not None:
             raise UserAlreadyExistsException(
                 "User already exists."
                 " Please try again with a different username."
             )
-        return UserModel.from_entity(self.user_repo.add(user_model.to_entity())) \
+            
+        userData = UserModel.from_entity(self.user_repo.add(user_model.to_entity())) \
             .to_response()
+            
+        return UserResponse(
+            user=userData.to_response(),
+            access_token=self.auth_service.generate_auth_token(userData.id),
+            refresh_token=self.auth_service.generate_refresh_token(userData.id)
+        )
 
     def remove(self, user_id: int) -> None:
         user = self.user_repo.get(user_id)

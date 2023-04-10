@@ -1,12 +1,14 @@
 from duo.depends.depends_user import get_user_service
+from duo.response.user.user_response import UserResponse
 from duo.service.user_service import UserService
 from duo.model.user_model import UserModel
 
 from fastapi_utils.inferring_router import InferringRouter
-from fastapi import Depends, Form, Response
+from fastapi import Depends, Form
 from fastapi_utils.cbv import cbv
 
 from typing import Optional, Annotated
+
 
 user_router = InferringRouter()
 
@@ -26,11 +28,11 @@ class UserController:
         )
 
     @user_router.post("/user/signup", status_code=201)
-    def register(self, user_model: UserModel) -> UserModel:
+    def register(self, user_model: UserModel) -> UserResponse:
         return self.user_service.register(user_model)
 
     @user_router.post("/user/login", status_code=200)
-    def login(self, username: Annotated[str, Form()], password: Annotated[str, Form()]) -> UserModel:
+    def login(self, username: Annotated[str, Form()], password: Annotated[str, Form()]) -> UserResponse:
         return self.user_service.login(username, password)
 
     @user_router.delete("/user/{user_id}", status_code=204)

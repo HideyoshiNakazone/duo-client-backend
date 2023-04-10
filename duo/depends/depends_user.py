@@ -39,6 +39,9 @@ def load_environment_variables() -> dict:
 def get_engine() -> Engine:
     DRIVER = "postgresql+psycopg2"
 
+    if os.environ.get('ENV') == 'test':
+        return create_engine('sqlite:///:memory:')
+
     url = URL.create(
         DRIVER,
         **load_environment_variables()
@@ -50,9 +53,12 @@ def get_user_repo(engine: Engine) -> UserRepository:
     return UserRepository(engine)
 
 
-def get_user_service() -> UserService:
-    return UserService(get_user_repo(get_engine()))
-
-
 def get_auth_service() -> AuthService:
     return AuthService()
+
+
+def get_user_service() -> UserService:
+    return UserService(
+        get_user_repo(get_engine()),
+        get_auth_service()
+    )
