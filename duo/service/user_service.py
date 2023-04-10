@@ -1,15 +1,18 @@
+
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.shared.exception.user_already_exists_exception import UserAlreadyExistsException
 from duo.shared.exception.user_not_found_exception import UserNotFoundException
 from duo.repo.user_repository import UserRepository
+from duo.service.auth_service import AuthService
 from duo.model.user_model import UserModel
 
 
 class UserService:
-    __slots__ = ['user_repo']
+    __slots__ = ['user_repo', 'auth_service']
 
-    def __init__(self, user_repo: UserRepository):
+    def __init__(self, user_repo: UserRepository, auth_service: AuthService):
         self.user_repo = user_repo
+        self.auth_service = auth_service
 
     def get_users(self, **kwargs) -> list[UserModel]:
         users = self.user_repo.get_all(**kwargs)

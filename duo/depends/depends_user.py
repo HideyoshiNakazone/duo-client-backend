@@ -1,6 +1,7 @@
 from functools import cache
 
 from duo.repo.user_repository import UserRepository
+from duo.service.auth_service import AuthService
 from duo.service.user_service import UserService
 
 from sqlalchemy.engine import Engine, URL
@@ -51,3 +52,7 @@ def get_user_repo(engine: Engine) -> UserRepository:
 
 def get_user_service() -> UserService:
     return UserService(get_user_repo(get_engine()))
+
+
+def get_auth_service() -> AuthService:
+    return AuthService()

@@ -12,6 +12,8 @@ fastapi-utils = "*"
 uvicorn = "*"
 python-multipart = "*"
 sqlalchemy = "*"
+pyjwt = "*"
+python-dateutil = "*"
 
 [dev-packages]
 coverage = "*"
