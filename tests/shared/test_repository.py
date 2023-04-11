@@ -1,4 +1,4 @@
-from duo.shared.repository import Repository
+from duo.shared.repository import SQLRepository
 from duo.shared.entity import Entity
 
 from sqlalchemy.engine import create_engine
@@ -23,12 +23,12 @@ class TestRepository(unittest.TestCase):
         self.Test = Test
 
     def test_class_instantiation(self):
-        repository = Repository(self.engine, self.Test)
+        repository = SQLRepository(self.engine, self.Test)
 
-        self.assertIsInstance(repository, Repository)
+        self.assertIsInstance(repository, SQLRepository)
 
     def test_get(self):
-        repository = Repository(self.engine, self.Test)
+        repository = SQLRepository(self.engine, self.Test)
 
         test_entity = self.Test()
         repository.add(test_entity)
@@ -36,7 +36,7 @@ class TestRepository(unittest.TestCase):
         self.assertEqual(repository.get(1).id, test_entity.id)
 
     def test_get_all(self):
-        repository = Repository(self.engine, self.Test)
+        repository = SQLRepository(self.engine, self.Test)
 
         test_entity1 = self.Test(val=1)
         repository.add(test_entity1)
@@ -49,7 +49,7 @@ class TestRepository(unittest.TestCase):
         self.assertEqual(len(repository.get_all(val=1)), 1)
 
     def test_add(self):
-        repository = Repository(self.engine, self.Test)
+        repository = SQLRepository(self.engine, self.Test)
 
         test_entity = self.Test()
         repository.add(test_entity)
@@ -57,7 +57,7 @@ class TestRepository(unittest.TestCase):
         self.assertEqual(test_entity.id, 1)
 
     def test_remove(self):
-        repository = Repository(self.engine, self.Test)
+        repository = SQLRepository(self.engine, self.Test)
 
         test_entity = self.Test()
         repository.add(test_entity)
@@ -70,7 +70,7 @@ class TestRepository(unittest.TestCase):
         )
 
     def test_update(self):
-        repository = Repository(self.engine, self.Test)
+        repository = SQLRepository(self.engine, self.Test)
 
         test_entity = self.Test(val=1)
         repository.add(test_entity)

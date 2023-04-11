@@ -1,12 +1,12 @@
 from typing import Type
 
-from duo.shared.repository import Repository
+from duo.shared.repository import SQLRepository
 from duo.entity.user_entity import UserEntity
 
 from sqlalchemy.orm import Session
 
 
-class UserRepository(Repository):
+class UserRepository(SQLRepository):
     entity = UserEntity
 
     def get_user_by_username(self, username) -> entity | None:

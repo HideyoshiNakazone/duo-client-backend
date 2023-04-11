@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 @as_declarative()
-class Entity(object):
+class Entity:
     id = Column(Integer, primary_key=True)
 
     created_at = Column(DateTime, default=datetime.now)
