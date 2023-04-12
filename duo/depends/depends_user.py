@@ -39,13 +39,11 @@ def load_environment_variables() -> dict:
 def get_engine() -> Engine:
     DRIVER = "postgresql+psycopg2"
 
-    if os.environ.get('ENV') == 'test':
-        return create_engine('sqlite:///:memory:')
-
     url = URL.create(
         DRIVER,
         **load_environment_variables()
     )
+    
     return create_engine(url)
 
 
