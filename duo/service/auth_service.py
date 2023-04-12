@@ -8,9 +8,11 @@ import jwt
 
 
 class AuthService:
-    JWT_SECRET = get_jwt_secret()
-    JWT_ALGORITHM = get_jwt_algorithm()
-    JWT_EXPIRATION = get_jwt_expiration()
+
+    def __init__(self):
+        self.JWT_SECRET = get_jwt_secret()
+        self.JWT_ALGORITHM = get_jwt_algorithm()
+        self.JWT_EXPIRATION = get_jwt_expiration()
 
     def generate_auth_token(self, user_id: int) -> Token:
         expiration_date = datetime.now() + timedelta(seconds=int(self.JWT_EXPIRATION))
