@@ -1,7 +1,8 @@
 from duo.entity.user_entity import UserEntity
+from duo.enum.roles_enum import RoleEnum
 
+from dataclasses import dataclass, field
 from passlib.hash import sha256_crypt
-from dataclasses import dataclass
 
 from typing import Optional, Union
 
@@ -12,6 +13,8 @@ class UserModel:
     fullname: str
     email: str
     password: str | None
+
+    roles: list[RoleEnum] = field(default_factory=lambda: [RoleEnum.USER])
 
     id: Optional[int] = None
 
@@ -29,13 +32,15 @@ class UserModel:
         return sha256_crypt.verify(password, self.password)
 
     def to_entity(self) -> UserEntity:
-        return UserEntity(
+        user_entity = UserEntity(
             id=self.id,
             username=self.username,
             fullname=self.fullname,
             email=self.email,
             password=self.password
         )
+        user_entity.roles = self.roles
+        return user_entity
 
     def update(self, user_model: 'UserModel') -> None:
         self.username = user_model.username
@@ -55,5 +60,6 @@ class UserModel:
             username=user_entity.username,
             fullname=user_entity.fullname,
             email=user_entity.email,
-            password=user_entity.password
+            password=user_entity.password,
+            roles=user_entity.roles
         )

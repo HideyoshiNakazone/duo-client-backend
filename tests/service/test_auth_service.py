@@ -1,3 +1,4 @@
+from duo.shared.exception.invalid_resource_exception import InvalidResourceException
 from duo.response.user.token_response import Token
 from duo.service.auth_service import AuthService
 
@@ -58,7 +59,7 @@ class TestAuthService(unittest.TestCase):
     @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
     @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
     @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
-    def test_decode_auth_token(self,
+    def test_decode_auth_token_when_valid(self,
                                mock_jwt_expiration,
                                mock_jwt_algorithm,
                                mock_jwt_secret):
@@ -69,12 +70,31 @@ class TestAuthService(unittest.TestCase):
         authenticated_user_id = 1
 
         auth_service = AuthService()
-        token = auth_service.generate_refresh_token(authenticated_user_id)
+        token = auth_service.generate_auth_token(authenticated_user_id)
 
 
         user_id = auth_service.decode_auth_token(token)['user_id']
 
         self.assertEqual(authenticated_user_id, user_id)
+
+    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    def test_decode_auth_token_when_invalid(self,
+                               mock_jwt_expiration,
+                               mock_jwt_algorithm,
+                               mock_jwt_secret):
+        mock_jwt_expiration.return_value = -3600
+        mock_jwt_algorithm.return_value = 'HS256'
+        mock_jwt_secret.return_value = 'secret'
+
+        authenticated_user_id = 1
+
+        auth_service = AuthService()
+        token = auth_service.generate_auth_token(authenticated_user_id)
+
+        with self.assertRaises(InvalidResourceException):
+            auth_service.decode_auth_token(token)['user_id']
 
 
 if __name__ == '__main__':
