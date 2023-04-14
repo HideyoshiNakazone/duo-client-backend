@@ -21,9 +21,12 @@ class UserController:
     session_service: SessionService = Depends(get_session_service)
 
     @user_router.get("/user", status_code=200)
-    def get_users(self, username: Optional[str] = None,
+    def get_users(self, request: Request, response: Response,
+                  username: Optional[str] = None,
                   fullname: Optional[str] = None,
                   email: Optional[str] = None) -> list[UserModel]:
+
+        self.session_service.from_request(request, response).validate_is_admin()
 
         return self.user_service.get_users(
             username=username,
@@ -55,9 +58,16 @@ class UserController:
         return user_response
 
     @user_router.delete("/user/{user_id}", status_code=204)
-    def remove(self, user_id: int):
+    def remove(self, user_id: int, request: Request, response: Response):
+        self.session_service.from_request(request, response).validate_same_user(user_id)
+
         self.user_service.remove(user_id)
 
     @user_router.put("/user/{user_id}", status_code=204)
-    def update_user(self, user_id: int, user_model: UserModel):
+    def update_user(self, user_id: int,
+                    user_model: UserModel,
+                    request: Request,
+                    response: Response):
+        self.session_service.from_request(request, response).validate_same_user(user_id)
+
         self.user_service.update(user_id, user_model)

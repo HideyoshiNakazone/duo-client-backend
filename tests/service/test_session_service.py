@@ -1,7 +1,9 @@
+from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.service.session_service import SessionService
 from duo.response.user.user_response import UserResponse
 from duo.response.user.token_response import Token
 from duo.model.user_model import UserModel
+from duo.enum.roles_enum import RoleEnum
 
 from datetime import datetime, timedelta
 import uuid
@@ -51,7 +53,7 @@ class TestSession(unittest.TestCase):
         self.mock_session_repo = mock.Mock()
         self.mock_request = mock.Mock()
         self.mock_response = mock.Mock()
-        self.session = SessionService.Session(
+        self.session = SessionService.SessionManager(
             'session_id',
             self.mock_session_repo,
             self.mock_request,
@@ -117,6 +119,67 @@ class TestSession(unittest.TestCase):
 
         self.assertTrue(self.mock_session_repo.remove.called_once_with(self.session.session_id))
         self.assertTrue(self.mock_response.delete_cookie.called)
+
+    def test_is_logged_in(self):
+        self.mock_session_repo.get.return_value = 'FAKE INFO'
+        self.assertFalse(self.session.validate_is_logged_in())
+
+        self.mock_session_repo.get.return_value = None
+        with self.assertRaises(InvalidUserAuthenticationException):
+            self.session.validate_is_logged_in()
+
+    def test_validate_is_admin(self):
+        expected_user_data = UserResponse(
+            user=UserModel(
+                id=1,
+                username='john_doe',
+                fullname='John Doe',
+                email='john_doe@email.com',
+                password='password',
+                roles=[RoleEnum.ADMIN]
+            ),
+            access_token=Token(
+                token='access_token',
+                expiration=datetime.now() + timedelta(minutes=60)
+            ),
+            refresh_token=Token(
+                token='access_token',
+                expiration=datetime.now() + timedelta(days=30)
+            ),
+        )
+        self.mock_session_repo.get.return_value = expected_user_data
+
+        self.session.validate_is_admin()
+
+        self.mock_session_repo.get.return_value = None
+        with self.assertRaises(InvalidUserAuthenticationException):
+            self.session.validate_is_admin()
+
+    def test_validate_same_user(self):
+        expected_user_data = UserResponse(
+            user=UserModel(
+                id=1,
+                username='john_doe',
+                fullname='John Doe',
+                email='john_doe@email.com',
+                password='password',
+                roles=[RoleEnum.ADMIN]
+            ),
+            access_token=Token(
+                token='access_token',
+                expiration=datetime.now() + timedelta(minutes=60)
+            ),
+            refresh_token=Token(
+                token='access_token',
+                expiration=datetime.now() + timedelta(days=30)
+            ),
+        )
+        self.mock_session_repo.get.return_value = expected_user_data
+
+        self.session.validate_same_user(1)
+
+        with self.assertRaises(InvalidUserAuthenticationException):
+            self.session.validate_same_user(2)
 
 
 if __name__ == '__main__':

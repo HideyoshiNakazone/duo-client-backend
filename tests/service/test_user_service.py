@@ -28,13 +28,15 @@ class TestUserService(unittest.TestCase):
                 username='john_doe',
                 fullname='John Doe',
                 email='john_doe@email.com',
-                password='passwd'
+                password='passwd',
+                _roles='USER'
             ),
             UserEntity(
                 username='maria_doe',
                 fullname='Maria Doe',
                 email='maria_doe@email.com',
-                password='passwd'
+                password='passwd',
+                _roles='USER'
             )
         ]
 
@@ -69,7 +71,8 @@ class TestUserService(unittest.TestCase):
             username='john_doe',
             fullname='John Doe',
             email='john_doe@email.com',
-            password='error'
+            password='error',
+            _roles='USER'
         )
 
         with self.assertRaises(InvalidUserAuthenticationException):
@@ -79,7 +82,8 @@ class TestUserService(unittest.TestCase):
             username='john_doe',
             fullname='John Doe',
             email='john_doe@email.com',
-            password='password'
+            password='password',
+            _roles='USER'
         )
         self.assertEqual(
             service.login('john_doe', 'password').user.username,
@@ -102,7 +106,8 @@ class TestUserService(unittest.TestCase):
             username='john_doe',
             fullname='John Doe',
             email='john_doe@email.com',
-            password='password'
+            password='password',
+            _roles='USER'
         )
         with self.assertRaises(UserAlreadyExistsException):
             service.register(user)
@@ -127,7 +132,8 @@ class TestUserService(unittest.TestCase):
             username='john_doe',
             fullname='John Doe',
             email='john_doe@email.com',
-            password='password'
+            password='password',
+            _roles='USER'
         )
         self.assertIsNone(service.remove(1))
 
@@ -141,7 +147,8 @@ class TestUserService(unittest.TestCase):
             username='john_doe',
             fullname='John Doe',
             email='john_doe@email.com',
-            password='password'
+            password='password',
+            _roles='USER'
         )
 
         expected_entity = UserModel(

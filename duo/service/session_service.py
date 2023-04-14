@@ -1,5 +1,7 @@
+from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.repo.redis_session_repository import RedisSessionRepository
 from duo.response.user.user_response import UserResponse
+from duo.enum.roles_enum import RoleEnum
 
 from fastapi import Request, Response
 import uuid
@@ -10,9 +12,9 @@ class SessionService:
     def __init__(self, session_repo: RedisSessionRepository):
         self.session_repo = session_repo
 
-    def from_request(self, request: Request, response: Response) -> 'SessionService.Session':
+    def from_request(self, request: Request, response: Response) -> 'SessionService.SessionManager':
         session_id = self._validate_session_id(request.cookies.get('session_id'))
-        return self.Session(session_id, self.session_repo, request, response)
+        return self.SessionManager(session_id, self.session_repo, request, response)
 
     @staticmethod
     def _validate_session_id(session_id: str) -> str:
@@ -20,7 +22,7 @@ class SessionService:
             return str(uuid.uuid4())
         return session_id
 
-    class Session:
+    class SessionManager:
         def __init__(self, session_id: str,
                      session_repo: RedisSessionRepository,
                      request: Request, response: Response):
@@ -44,3 +46,27 @@ class SessionService:
         def remove_user_info(self):
             self.session_repo.remove(self.session_id)
             self.response.delete_cookie('session_id')
+
+        def validate_is_logged_in(self):
+            if self.get_user_info() is None:
+                raise InvalidUserAuthenticationException(
+                    "Unauthorized"
+                )
+
+        def validate_is_admin(self):
+            user_info = self.get_user_info()
+            if user_info is None or \
+               user_info.user is None or \
+               RoleEnum.ADMIN not in user_info.user.roles:
+                raise InvalidUserAuthenticationException(
+                    "Unauthorized"
+                )
+
+        def validate_same_user(self, user_id: int):
+            user_info = self.get_user_info()
+            if user_info is None or \
+               user_info.user is None or \
+               user_info.user.id != user_id:
+                raise InvalidUserAuthenticationException(
+                    "Unauthorized"
+                )

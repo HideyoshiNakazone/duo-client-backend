@@ -1,4 +1,5 @@
 from duo.entity.user_entity import UserEntity
+from duo.enum.roles_enum import RoleEnum
 from duo.model.user_model import UserModel
 
 from passlib.handlers.sha2_crypt import sha256_crypt
@@ -54,7 +55,8 @@ class TestUserModel(unittest.TestCase):
             username='john_doe',
             fullname='John Doe',
             email='john_doe@email.com',
-            password='password'
+            password='password',
+            _roles='USER'
         )
 
         user = UserModel.from_entity(user_entity)
