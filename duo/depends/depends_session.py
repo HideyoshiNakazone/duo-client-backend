@@ -1,3 +1,4 @@
+from duo.depends.depends_user import get_auth_service
 from duo.repo.redis_session_repository import RedisSessionRepository
 from duo.service.session_service import SessionService
 
@@ -36,4 +37,4 @@ def get_redis_session_repo() -> RedisSessionRepository:
 
 
 def get_session_service():
-    return SessionService(get_redis_session_repo())
+    return SessionService(get_redis_session_repo(), get_auth_service())

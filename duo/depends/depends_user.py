@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import os
 
 
+@cache
 def load_environment_variables() -> dict:
     env_variables = [
         'DB_HOST',
@@ -35,6 +36,7 @@ def load_environment_variables() -> dict:
     }
 
 
+@cache
 def load_default_admin_user():
     env_variables = [
         'ADMIN_USERNAME',

@@ -3,7 +3,7 @@ from functools import cache
 import os
 
 
-# @cache
+@cache
 def load_environment_variables() -> dict:
     env_variables = [
         'JWT_SECRET',

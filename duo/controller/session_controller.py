@@ -10,7 +10,7 @@ session_router = InferringRouter()
 
 @cbv(session_router)
 class SessionController:
-    session_service: SessionService = Depends(get_session_service)
+    session_service: SessionService = Depends(get_session_service, use_cache=True)
 
     @session_router.get("/session", status_code=200)
     def get_session(self, request: Request, response: Response):
@@ -21,3 +21,8 @@ class SessionController:
     def remove_session(self, request: Request, response: Response):
         self.session_service.from_request(request, response) \
             .remove_user_info()
+
+    @session_router.get("/session/refresh", status_code=200)
+    def refresh_session(self, request: Request, response: Response):
+        return self.session_service.from_request(request, response) \
+            .refresh_session()

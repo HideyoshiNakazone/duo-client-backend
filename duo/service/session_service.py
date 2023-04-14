@@ -1,20 +1,30 @@
+from duo.service.auth_service import AuthService
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.repo.redis_session_repository import RedisSessionRepository
 from duo.response.user.user_response import UserResponse
 from duo.enum.roles_enum import RoleEnum
 
 from fastapi import Request, Response
+from datetime import datetime
 import uuid
 
 
 class SessionService:
 
-    def __init__(self, session_repo: RedisSessionRepository):
+    def __init__(self,
+                 session_repo: RedisSessionRepository,
+                 auth_service: AuthService):
         self.session_repo = session_repo
+        self.auth_service = auth_service
 
     def from_request(self, request: Request, response: Response) -> 'SessionService.SessionManager':
         session_id = self._validate_session_id(request.cookies.get('session_id'))
-        return self.SessionManager(session_id, self.session_repo, request, response)
+        return self.SessionManager(
+            session_id,
+            self.session_repo,
+            self.auth_service,
+            request, response
+        )
 
     @staticmethod
     def _validate_session_id(session_id: str) -> str:
@@ -25,9 +35,13 @@ class SessionService:
     class SessionManager:
         def __init__(self, session_id: str,
                      session_repo: RedisSessionRepository,
+                     auth_service: AuthService,
                      request: Request, response: Response):
             self.session_id = session_id
+
             self.session_repo = session_repo
+            self.auth_service = auth_service
+
             self.request = request
             self.response = response
 
@@ -56,8 +70,8 @@ class SessionService:
         def validate_is_admin(self):
             user_info = self.get_user_info()
             if user_info is None or \
-               user_info.user is None or \
-               RoleEnum.ADMIN not in user_info.user.roles:
+                    user_info.user is None or \
+                    RoleEnum.ADMIN not in user_info.user.roles:
                 raise InvalidUserAuthenticationException(
                     "Unauthorized"
                 )
@@ -65,8 +79,23 @@ class SessionService:
         def validate_same_user(self, user_id: int):
             user_info = self.get_user_info()
             if user_info is None or \
-               user_info.user is None or \
-               user_info.user.id != user_id:
+                    user_info.user is None or \
+                    user_info.user.id != user_id:
                 raise InvalidUserAuthenticationException(
                     "Unauthorized"
                 )
+
+        def refresh_session(self) -> UserResponse:
+            user_info = self.get_user_info()
+
+            if user_info is None or user_info.user is None:
+                raise InvalidUserAuthenticationException(
+                    "Unauthorized"
+                )
+
+            if user_info.refresh_token.expiration > datetime.now():
+                user_info.access_token = self.auth_service.generate_auth_token(user_info.user.id)
+
+            self.session_repo.update(self.session_id, user_info)
+
+            return user_info

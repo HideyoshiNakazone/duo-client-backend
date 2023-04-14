@@ -17,8 +17,8 @@ user_router = InferringRouter()
 
 @cbv(user_router)
 class UserController:
-    user_service: UserService = Depends(get_user_service)
-    session_service: SessionService = Depends(get_session_service)
+    user_service: UserService = Depends(get_user_service, use_cache=True)
+    session_service: SessionService = Depends(get_session_service, use_cache=True)
 
     @user_router.get("/user", status_code=200)
     def get_users(self, request: Request, response: Response,
