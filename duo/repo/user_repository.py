@@ -1,4 +1,4 @@
-from typing import Type
+from __future__ import annotations
 
 from duo.shared.repository import SQLRepository
 from duo.entity.user_entity import UserEntity

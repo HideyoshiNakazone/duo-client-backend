@@ -11,7 +11,7 @@ import unittest
 
 
 class TestUserService(unittest.TestCase):
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.service.auth_service.AuthService', spec=True)
     @mock.patch('duo.service.user_service.UserRepository', spec=True)
     def test_class_instantiation(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)

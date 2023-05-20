@@ -15,6 +15,7 @@ sqlalchemy = "*"
 pyjwt = "*"
 python-dateutil = "*"
 redis = "*"
+setuptools = "*"
 
 [dev-packages]
 coverage = "*"

@@ -29,5 +29,5 @@ class Entity:
             else:
                 at_least_one_attached_attribute = True
         if at_least_one_attached_attribute:
-            return f"<{self.__class__.__name__}({','.join(field_strings)})>"
+            return f"<{self.__class__.__name__}({', '.join(field_strings)})>"
         return f"<{self.__class__.__name__} {id(self)}>"

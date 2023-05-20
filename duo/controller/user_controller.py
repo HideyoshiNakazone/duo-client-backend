@@ -49,7 +49,6 @@ class UserController:
     def login(self, username: Annotated[str, Form()],
               password: Annotated[str, Form()],
               request: Request, response: Response) -> UserResponse:
-
         user_response = self.user_service.login(username, password)
 
         self.session_service.from_request(request, response)\

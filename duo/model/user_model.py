@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 from duo.entity.user_entity import UserEntity
 from duo.enum.roles_enum import RoleEnum
 
 from dataclasses import dataclass, field
 from passlib.hash import sha256_crypt
+from passlib.hash import pbkdf2_sha256
 
 from typing import Optional, Union
 
@@ -25,11 +28,11 @@ class UserModel:
         if self.password is None:
             return
 
-        if not sha256_crypt.identify(self.password.encode()):
-            self.password = sha256_crypt.hash(self.password.encode())
+        if not pbkdf2_sha256.identify(self.password.encode()):
+            self.password = pbkdf2_sha256.hash(self.password.encode())
 
     def verify_password(self, password: str) -> bool:
-        return sha256_crypt.verify(password, self.password)
+        return pbkdf2_sha256.verify(password, self.password)
 
     def to_entity(self) -> UserEntity:
         user_entity = UserEntity(
@@ -52,7 +55,7 @@ class UserModel:
         return self
 
     @classmethod
-    def from_entity(cls, user_entity: UserEntity) -> Union['UserModel', None]:
+    def from_entity(cls, user_entity: UserEntity) -> 'UserModel' | None:
         if user_entity is None:
             return None
         return cls(

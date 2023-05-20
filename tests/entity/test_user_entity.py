@@ -22,7 +22,7 @@ class TestUserEntity(unittest.TestCase):
             password='password'
         )
 
-        expected_repr = "<UserEntity(id=None,username='john_doe',fullname='John Doe',email='john_doe@email.com')>"
+        expected_repr = "<UserEntity(id=None, username='john_doe', fullname='John Doe', email='john_doe@email.com')>"
 
         self.assertEqual(user.__repr__(), expected_repr)
 

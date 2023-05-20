@@ -1,8 +1,7 @@
 from duo.entity.user_entity import UserEntity
-from duo.enum.roles_enum import RoleEnum
 from duo.model.user_model import UserModel
 
-from passlib.handlers.sha2_crypt import sha256_crypt
+from passlib.hash import pbkdf2_sha256
 
 import unittest
 
@@ -26,7 +25,7 @@ class TestUserModel(unittest.TestCase):
             password='password'
         )
 
-        self.assertTrue(sha256_crypt.identify(user.password))
+        self.assertTrue(pbkdf2_sha256.identify(user.password))
 
     def test_verify_password(self):
         user = UserModel(
