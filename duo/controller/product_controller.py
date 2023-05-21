@@ -31,6 +31,18 @@ class UserController:
             price=price
         )
 
+    @product_router.get("/product/search", status_code=200)
+    def search_products(self, name: Optional[str] = None,
+                        description: Optional[str] = None,
+                        price: Optional[float] = None,
+                        price_rance: Optional[int] = 1) -> list[ProductModel]:
+        return self.product_service.search_products(
+            name=name,
+            description=description,
+            price=price,
+            price_range=price_rance
+        )
+
     @product_router.post("/product", status_code=201)
     def add_product(self, request: Request, response: Response,
                     product_model: ProductModel) -> ProductModel:
@@ -56,15 +68,4 @@ class UserController:
             .validate_is_admin()
         self.product_service.remove_product(product_id)
 
-    @product_router.get("/product/by-name/{name}", status_code=200)
-    def get_product_by_name(self, name: str) -> list[ProductModel]:
-        return self.product_service.get_product_by_name(name)
-
-    @product_router.get("/product/by-description/{description}", status_code=200)
-    def get_product_by_description(self, description: str) -> list[ProductModel]:
-        return self.product_service.get_product_by_description(description)
-
-    @product_router.get("/product/by-price/{price}", status_code=200)
-    def get_product_by_price(self, price: float,
-                             range: Optional[int] = 1) -> list[ProductModel]:
-        return self.product_service.get_product_by_price(price, range)
+        return

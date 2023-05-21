@@ -46,29 +46,16 @@ class ProductService:
             )
         self.product_repo.remove(product)
 
-    def get_product_by_name(self, name: str) -> list[ProductModel]:
-        products = self.product_repo.get_product_by_name(name)
-        if products is None:
-            raise ResourceNotFoundException(
-                "Product not found."
-                " Please try again with a valid product."
-            )
-        return [ProductModel.from_entity(product) for product in products]
-
-    def get_product_by_description(self, description: str) -> list[ProductModel]:
-        products = self.product_repo.get_product_by_description(description)
-        if products is None:
-            raise ResourceNotFoundException(
-                "Product not found."
-                " Please try again with a valid product."
-            )
-        return [ProductModel.from_entity(product) for product in products]
-
-    def get_product_by_price(self, price: float, price_range=1) -> list[ProductModel]:
-        products = self.product_repo.get_product_by_price(price, price_range)
-        if products is None:
-            raise ResourceNotFoundException(
-                "Product not found."
-                " Please try again with a valid product."
+    def search_products(self, name: str = None,
+                        description: str = None,
+                        price: float = None,
+                        price_range=1, limit=10) -> list[ProductModel]:
+        products = self.product_repo\
+            .get_product_with_filters(
+                name,
+                description,
+                price,
+                price_range,
+                limit
             )
         return [ProductModel.from_entity(product) for product in products]

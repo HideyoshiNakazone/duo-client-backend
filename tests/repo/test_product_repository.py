@@ -3,6 +3,7 @@ from duo.entity.product_entity import Product
 
 from sqlalchemy import create_engine
 
+from unittest import mock
 import unittest
 
 
@@ -16,47 +17,37 @@ class TestProductRepository(unittest.TestCase):
         self.assertIsInstance(repo, ProductRepository)
         self.assertIsNotNone(repo.entity)
 
-    def test_get_product_by_name(self):
+    @mock.patch('duo.repo.product_repository.select')
+    @mock.patch('duo.repo.product_repository.Session')
+    def test_search__product_with_filters(self, session_mock, select_mock):
         repo = ProductRepository(self.engine)
 
-        product = Product(
-            name='Product',
-            description='Product description',
-            price=100
+        product1 = Product(
+            name='product1',
+            description='description1',
+            price=1.0
         )
-        repo.add(product)
+        repo.add(product1)
 
-        self.assertEqual(
-            len(repo.get_product_by_name('Product')), 1
+        product2 = Product(
+            name='product2',
+            description='description2',
+            price=2.0
         )
+        repo.add(product2)
 
-    def test_get_product_by_description(self):
-        repo = ProductRepository(self.engine)
+        repo.get_product_with_filters('product1', 'description', None)
 
-        product = Product(
-            name='Product',
-            description='Product description',
-            price=100
-        )
-        repo.add(product)
+        select_mock.assert_called_once_with(repo.entity)
+        session_mock.assert_called_once_with(repo.engine)
 
-        self.assertEqual(
-            len(repo.get_product_by_description('Product description')), 1
-        )
+        mock_query = select_mock.return_value
+        self.assertEqual(mock_query.order_by.call_count, 1)
 
-    def test_get_product_by_price(self):
-        repo = ProductRepository(self.engine)
+        repo.get_product_with_filters('product1', None, 1.0)
 
-        product = Product(
-            name='Product',
-            description='Product description',
-            price=100
-        )
-        repo.add(product)
-
-        self.assertEqual(
-            len(repo.get_product_by_price(100)), 1
-        )
+        self.assertEqual(mock_query.filter.call_count, 1)
+        self.assertEqual(mock_query.order_by.call_count, 1)
 
 
 if __name__ == '__main__':

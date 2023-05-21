@@ -4,29 +4,36 @@ from duo.shared.repository import SQLRepository
 from duo.entity.product_entity import Product
 
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import desc, func
+from sqlalchemy import select
 
 
 class ProductRepository(SQLRepository):
     entity = Product
 
-    def get_product_by_name(self, name: str, limit=10) -> list[entity] | None:
-        with Session(self.engine) as session:
-            return session.query(self.entity)\
-                .filter(
-                    self.entity.name.op("%")(name)
-                ).limit(limit).all()
+    def get_product_with_filters(self, name: str, description: str, price: float, price_range=1, limit=10) -> list[entity] | None:
+        query = select(self.entity)
 
-    def get_product_by_description(self, description: str, limit=10) -> list[entity] | None:
-        with Session(self.engine) as session:
-            return session.query(self.entity)\
-                .filter(
-                    self.entity.description.op("%")(description)
-                ).limit(limit).all()
+        order_by = []
+        if name and isinstance(name, str):
+            order_by.append(
+                desc(func.similarity(self.entity.name, name))
+            )
 
-    def get_product_by_price(self, price: float, price_range=1, limit=10) -> list[entity] | None:
+        if description and isinstance(description, str):
+            order_by.append(
+                desc(func.similarity(self.entity.description, description))
+            )
+
+        if price and isinstance(price, float):
+            query = query.filter(
+                self.entity.price.between(price - price_range, price + price_range)
+            )
+
+        if order_by:
+            query = query.order_by(*order_by)
+
+        query = query.limit(limit)
+
         with Session(self.engine) as session:
-            return session.query(self.entity)\
-                .filter(
-                    self.entity.price.between(price - price_range, price + price_range)
-                ).limit(limit).all()
+            return session.execute(query).scalars().all()
