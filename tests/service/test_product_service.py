@@ -8,22 +8,18 @@ import unittest
 
 
 class TestProductService(unittest.TestCase):
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_class_instantiation(self, mock_product_repo, mock_auth_service):
+    def test_class_instantiation(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         self.assertIsInstance(product_service, ProductService)
 
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_get_products(self, mock_product_repo, mock_auth_service):
+    def test_get_products(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         mock_product_repo.get_all.return_value = [
@@ -45,12 +41,10 @@ class TestProductService(unittest.TestCase):
 
         self.assertEqual(len(products), 2)
 
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_get_product(self, mock_product_repo, mock_auth_service):
+    def test_get_product(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         mock_product_repo.get.return_value = Product(
@@ -69,12 +63,10 @@ class TestProductService(unittest.TestCase):
         with self.assertRaises(ResourceNotFoundException):
             product_service.get_product(1)
 
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_add_product(self, mock_product_repo, mock_auth_service):
+    def test_add_product(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         expected_product = Product(
@@ -92,12 +84,10 @@ class TestProductService(unittest.TestCase):
 
         self.assertEqual(product.id, 1)
 
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_update_product(self, mock_product_repo, mock_auth_service):
+    def test_update_product(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         expected_product = Product(
@@ -125,12 +115,10 @@ class TestProductService(unittest.TestCase):
                 ProductModel.from_entity(expected_product)
             )
 
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_remove_product(self, mock_product_repo, mock_auth_service):
+    def test_remove_product(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         mock_product_repo.get.return_value = Product(
@@ -147,12 +135,10 @@ class TestProductService(unittest.TestCase):
         with self.assertRaises(ResourceNotFoundException):
             product_service.remove_product(1)
 
-    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
     @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
-    def test_search_products(self, mock_product_repo, mock_auth_service):
+    def test_search_products(self, mock_product_repo):
         product_service = ProductService(
-            mock_product_repo,
-            mock_auth_service
+            mock_product_repo
         )
 
         mock_product_repo.get_product_with_filters.return_value = [

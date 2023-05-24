@@ -5,11 +5,10 @@ from duo.endpoints.product.model.product_model import ProductModel
 
 
 class ProductService:
-    __slots__ = ['product_repo', 'auth_service']
+    __slots__ = ['product_repo']
 
-    def __init__(self, product_repo: ProductRepository, auth_service: AuthService):
+    def __init__(self, product_repo: ProductRepository):
         self.product_repo = product_repo
-        self.auth_service = auth_service
 
     def get_products(self, **kwargs) -> list[ProductModel]:
         products = self.product_repo.get_all(**kwargs)

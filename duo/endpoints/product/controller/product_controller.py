@@ -12,13 +12,13 @@ from fastapi_utils.cbv import cbv
 
 from typing import Optional
 
+
 product_router = InferringRouter()
 
 
 @cbv(product_router)
 class UserController:
     product_service: ProductService = Depends(get_product_service, use_cache=True)
-    user_service: UserService = Depends(get_user_service, use_cache=True)
     session_service: SessionService = Depends(get_session_service, use_cache=True)
 
     @product_router.get("/product", status_code=200)
@@ -67,5 +67,3 @@ class UserController:
         self.session_service.from_request(request, response) \
             .validate_is_admin()
         self.product_service.remove_product(product_id)
-
-        return

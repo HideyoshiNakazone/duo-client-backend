@@ -1,5 +1,4 @@
 from duo.depends.depends_engine import get_engine
-from duo.depends.depends_user import get_auth_service
 from duo.endpoints.product.repo.product_repository import ProductRepository
 from duo.endpoints.product.service.product_service import ProductService
 
@@ -12,6 +11,5 @@ def get_product_repo(engine: Engine) -> ProductRepository:
 
 def get_product_service() -> ProductService:
     return ProductService(
-        get_product_repo(get_engine()),
-        get_auth_service()
+        get_product_repo(get_engine())
     )
