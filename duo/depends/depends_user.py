@@ -1,7 +1,7 @@
 from duo.depends.depends_engine import get_engine
-from duo.repo.user_repository import UserRepository
-from duo.service.auth_service import AuthService
-from duo.service.user_service import UserService
+from duo.endpoints.user.repo.user_repository import UserRepository
+from duo.auth.auth_service import AuthService
+from duo.endpoints.user.service.user_service import UserService
 
 from sqlalchemy.engine import Engine
 

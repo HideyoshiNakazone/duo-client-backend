@@ -1,5 +1,5 @@
-from duo.repo.user_repository import UserRepository
-from duo.entity.user_entity import UserEntity
+from duo.endpoints.user.repo.user_repository import UserRepository
+from duo.endpoints.user.entity.user_entity import UserEntity
 
 from sqlalchemy import create_engine
 

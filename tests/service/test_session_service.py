@@ -1,10 +1,10 @@
-from duo.service.auth_service import AuthService
+from duo.auth.auth_service import AuthService
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
-from duo.service.session_service import SessionService
-from duo.response.user.user_response import UserResponse
-from duo.response.user.token_response import Token
-from duo.model.user_model import UserModel
-from duo.enum.roles_enum import RoleEnum
+from duo.endpoints.session.service.session_service import SessionService
+from duo.endpoints.user.response.user_response import UserResponse
+from duo.endpoints.user.response.token_response import Token
+from duo.endpoints.user.model.user_model import UserModel
+from duo.endpoints.user.entity.roles_enum import RoleEnum
 
 from datetime import datetime, timedelta
 from copy import deepcopy
@@ -15,10 +15,10 @@ import unittest
 
 
 class TestSessionService(unittest.TestCase):
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
-    @mock.patch('duo.service.session_service.RedisSessionRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository', spec=True)
     def test_class_instantiation(self, mock_session_repo,
                                  mock_jwt_expiration,
                                  mock_jwt_algorithm,
@@ -30,10 +30,10 @@ class TestSessionService(unittest.TestCase):
         service = SessionService(mock_session_repo, AuthService())
         self.assertIsInstance(service, SessionService)
 
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
-    @mock.patch('duo.service.session_service.RedisSessionRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository', spec=True)
     def test_from_request(self, mock_session_repo,
                           mock_jwt_expiration,
                           mock_jwt_algorithm,
@@ -72,9 +72,9 @@ class TestSessionService(unittest.TestCase):
 
 class TestSession(unittest.TestCase):
 
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
     def setUp(self,
               mock_jwt_expiration,
               mock_jwt_algorithm,

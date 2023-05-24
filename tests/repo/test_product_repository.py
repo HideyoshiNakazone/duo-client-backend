@@ -1,5 +1,5 @@
-from duo.repo.product_repository import ProductRepository
-from duo.entity.product_entity import Product
+from duo.endpoints.product.repo.product_repository import ProductRepository
+from duo.endpoints.product.entity.product_entity import Product
 
 from sqlalchemy import create_engine
 
@@ -17,8 +17,8 @@ class TestProductRepository(unittest.TestCase):
         self.assertIsInstance(repo, ProductRepository)
         self.assertIsNotNone(repo.entity)
 
-    @mock.patch('duo.repo.product_repository.select')
-    @mock.patch('duo.repo.product_repository.Session')
+    @mock.patch('duo.endpoints.product.repo.product_repository.select')
+    @mock.patch('duo.endpoints.product.repo.product_repository.Session')
     def test_search__product_with_filters(self, session_mock, select_mock):
         repo = ProductRepository(self.engine)
 

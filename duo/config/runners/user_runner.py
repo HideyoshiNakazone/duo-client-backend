@@ -1,6 +1,6 @@
 from duo.depends.depends_user import get_user_service, load_default_admin_user
-from duo.model.user_model import UserModel
-from duo.enum.roles_enum import RoleEnum
+from duo.endpoints.user.model.user_model import UserModel
+from duo.endpoints.user.entity.roles_enum import RoleEnum
 
 
 def execute():

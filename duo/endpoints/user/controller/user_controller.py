@@ -1,9 +1,9 @@
 from duo.depends.depends_session import get_session_service
 from duo.depends.depends_user import get_user_service
-from duo.response.user.user_response import UserResponse
-from duo.service.session_service import SessionService
-from duo.service.user_service import UserService
-from duo.model.user_model import UserModel
+from duo.endpoints.user.response.user_response import UserResponse
+from duo.endpoints.session.service.session_service import SessionService
+from duo.endpoints.user.service.user_service import UserService
+from duo.endpoints.user.model.user_model import UserModel
 
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi import Depends, Form, Request, Response

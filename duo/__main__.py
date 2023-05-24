@@ -1,7 +1,7 @@
 from duo.config.config_runner import ConfigRunner
-from duo.controller.product_controller import product_router
-from duo.controller.session_controller import session_router
-from duo.controller.user_controller import user_router
+from duo.endpoints.product.controller.product_controller import product_router
+from duo.endpoints.session.controller.session_controller import session_router
+from duo.endpoints.user.controller.user_controller import user_router
 
 from fastapi import FastAPI
 import uvicorn

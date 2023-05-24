@@ -1,15 +1,15 @@
 from duo.shared.exception.resource_not_found import ResourceNotFoundException
-from duo.service.product_service import ProductService
-from duo.model.product_model import ProductModel
-from duo.entity.product_entity import Product
+from duo.endpoints.product.service.product_service import ProductService
+from duo.endpoints.product.model.product_model import ProductModel
+from duo.endpoints.product.entity.product_entity import Product
 
 from unittest import mock
 import unittest
 
 
 class TestProductService(unittest.TestCase):
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_class_instantiation(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,
@@ -18,8 +18,8 @@ class TestProductService(unittest.TestCase):
 
         self.assertIsInstance(product_service, ProductService)
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_get_products(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,
@@ -45,8 +45,8 @@ class TestProductService(unittest.TestCase):
 
         self.assertEqual(len(products), 2)
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_get_product(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,
@@ -69,8 +69,8 @@ class TestProductService(unittest.TestCase):
         with self.assertRaises(ResourceNotFoundException):
             product_service.get_product(1)
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_add_product(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,
@@ -92,8 +92,8 @@ class TestProductService(unittest.TestCase):
 
         self.assertEqual(product.id, 1)
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_update_product(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,
@@ -125,8 +125,8 @@ class TestProductService(unittest.TestCase):
                 ProductModel.from_entity(expected_product)
             )
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_remove_product(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,
@@ -147,8 +147,8 @@ class TestProductService(unittest.TestCase):
         with self.assertRaises(ResourceNotFoundException):
             product_service.remove_product(1)
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.repo.product_repository.ProductRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.product.repo.product_repository.ProductRepository', spec=True)
     def test_search_products(self, mock_product_repo, mock_auth_service):
         product_service = ProductService(
             mock_product_repo,

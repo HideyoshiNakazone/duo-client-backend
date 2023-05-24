@@ -1,5 +1,5 @@
-from duo.response.user.token_response import Token
-from duo.model.user_model import UserModel
+from duo.endpoints.user.response.token_response import Token
+from duo.endpoints.user.model.user_model import UserModel
 
 from dataclasses import dataclass
 

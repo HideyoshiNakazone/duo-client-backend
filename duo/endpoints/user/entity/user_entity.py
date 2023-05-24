@@ -1,4 +1,4 @@
-from duo.enum.roles_enum import RoleEnum
+from duo.endpoints.user.entity.roles_enum import RoleEnum
 from duo.shared.entity import Entity
 
 from sqlalchemy.ext.hybrid import hybrid_property

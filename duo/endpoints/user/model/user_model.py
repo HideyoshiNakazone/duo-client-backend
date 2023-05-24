@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from duo.entity.user_entity import UserEntity
-from duo.enum.roles_enum import RoleEnum
+from duo.endpoints.user.entity.user_entity import UserEntity
+from duo.endpoints.user.entity.roles_enum import RoleEnum
 
 from dataclasses import dataclass, field
-from passlib.hash import sha256_crypt
 from passlib.hash import pbkdf2_sha256
 
-from typing import Optional, Union
+from typing import Optional
 
 
 @dataclass

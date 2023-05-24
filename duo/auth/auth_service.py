@@ -1,6 +1,6 @@
 from duo.depends.depends_auth import get_jwt_secret, get_jwt_algorithm, get_jwt_expiration
 from duo.shared.exception.invalid_resource_exception import InvalidResourceException
-from duo.response.user.token_response import Token
+from duo.endpoints.user.response.token_response import Token
 
 from datetime import datetime, timedelta
 from dateutil.parser import parse

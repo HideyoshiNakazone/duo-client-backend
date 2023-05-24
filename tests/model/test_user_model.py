@@ -1,5 +1,5 @@
-from duo.entity.user_entity import UserEntity
-from duo.model.user_model import UserModel
+from duo.endpoints.user.entity.user_entity import UserEntity
+from duo.endpoints.user.model.user_model import UserModel
 
 from passlib.hash import pbkdf2_sha256
 

@@ -1,5 +1,5 @@
-from duo.entity.product_entity import Product
-from duo.model.product_model import ProductModel
+from duo.endpoints.product.entity.product_entity import Product
+from duo.endpoints.product.model.product_model import ProductModel
 
 import unittest
 

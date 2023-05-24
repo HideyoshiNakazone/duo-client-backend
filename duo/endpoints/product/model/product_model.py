@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from duo.entity.product_entity import Product
+from duo.endpoints.product.entity.product_entity import Product
 
 from dataclasses import dataclass
 

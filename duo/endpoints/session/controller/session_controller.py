@@ -1,5 +1,5 @@
 from duo.depends.depends_session import get_session_service
-from duo.service.session_service import SessionService
+from duo.endpoints.session.service.session_service import SessionService
 
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.cbv import cbv

@@ -1,4 +1,4 @@
-from duo.response.user.user_response import UserResponse
+from duo.endpoints.user.response.user_response import UserResponse
 from duo.shared.repository.repository import Repository
 
 import pickle

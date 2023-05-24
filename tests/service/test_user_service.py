@@ -1,24 +1,24 @@
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.shared.exception.user_already_exists_exception import UserAlreadyExistsException
 from duo.shared.exception.user_not_found_exception import UserNotFoundException
-from duo.service.user_service import UserService
-from duo.entity.user_entity import UserEntity
-from duo.model.user_model import UserModel
+from duo.endpoints.user.service.user_service import UserService
+from duo.endpoints.user.entity.user_entity import UserEntity
+from duo.endpoints.user.model.user_model import UserModel
 
 from unittest import mock
 import unittest
 
 
 class TestUserService(unittest.TestCase):
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.user.service.user_service.UserRepository', spec=True)
     def test_class_instantiation(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)
 
         self.assertIsInstance(service, UserService)
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.user.service.user_service.UserRepository', spec=True)
     def test_get_users(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)
 
@@ -56,8 +56,8 @@ class TestUserService(unittest.TestCase):
 
         self.assertEqual(expected_users, service.get_users())
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.user.service.user_service.UserRepository', spec=True)
     def test_login(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)
 
@@ -89,8 +89,8 @@ class TestUserService(unittest.TestCase):
             'john_doe'
         )
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.user.service.user_service.UserRepository', spec=True)
     def test_register(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)
 
@@ -118,8 +118,8 @@ class TestUserService(unittest.TestCase):
             'john_doe'
         )
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.user.service.user_service.UserRepository', spec=True)
     def test_remove(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)
 
@@ -136,8 +136,8 @@ class TestUserService(unittest.TestCase):
         )
         self.assertIsNone(service.remove(1))
 
-    @mock.patch('duo.service.auth_service.AuthService', spec=True)
-    @mock.patch('duo.service.user_service.UserRepository', spec=True)
+    @mock.patch('duo.auth.auth_service.AuthService', spec=True)
+    @mock.patch('duo.endpoints.user.service.user_service.UserRepository', spec=True)
     def test_update(self, mock_user_repo, mock_auth_service):
         service = UserService(mock_user_repo, mock_auth_service)
 

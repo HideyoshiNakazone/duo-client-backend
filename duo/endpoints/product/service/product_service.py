@@ -1,7 +1,7 @@
 from duo.shared.exception.resource_not_found import ResourceNotFoundException
-from duo.repo.product_repository import ProductRepository
-from duo.service.auth_service import AuthService
-from duo.model.product_model import ProductModel
+from duo.endpoints.product.repo.product_repository import ProductRepository
+from duo.auth.auth_service import AuthService
+from duo.endpoints.product.model.product_model import ProductModel
 
 
 class ProductService:

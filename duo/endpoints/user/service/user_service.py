@@ -1,10 +1,10 @@
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
 from duo.shared.exception.user_already_exists_exception import UserAlreadyExistsException
 from duo.shared.exception.user_not_found_exception import UserNotFoundException
-from duo.response.user.user_response import UserResponse
-from duo.repo.user_repository import UserRepository
-from duo.service.auth_service import AuthService
-from duo.model.user_model import UserModel
+from duo.endpoints.user.response.user_response import UserResponse
+from duo.endpoints.user.repo.user_repository import UserRepository
+from duo.auth.auth_service import AuthService
+from duo.endpoints.user.model.user_model import UserModel
 
 
 class UserService:

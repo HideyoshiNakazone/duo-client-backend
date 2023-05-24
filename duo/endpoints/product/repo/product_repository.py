@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from duo.shared.repository import SQLRepository
-from duo.entity.product_entity import Product
+from duo.endpoints.product.entity.product_entity import Product
 
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, func

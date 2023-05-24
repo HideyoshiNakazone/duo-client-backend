@@ -1,4 +1,4 @@
-from duo.entity.user_entity import UserEntity
+from duo.endpoints.user.entity.user_entity import UserEntity
 
 import unittest
 

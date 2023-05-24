@@ -1,7 +1,7 @@
 from duo.depends.depends_engine import get_engine
 from duo.depends.depends_user import get_auth_service
-from duo.repo.product_repository import ProductRepository
-from duo.service.product_service import ProductService
+from duo.endpoints.product.repo.product_repository import ProductRepository
+from duo.endpoints.product.service.product_service import ProductService
 
 from sqlalchemy.engine import Engine
 

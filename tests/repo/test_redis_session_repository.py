@@ -1,7 +1,7 @@
-from duo.repo.redis_session_repository import RedisSessionRepository
-from duo.response.user.user_response import UserResponse
-from duo.response.user.token_response import Token
-from duo.model.user_model import UserModel
+from duo.endpoints.session.repo.redis_session_repository import RedisSessionRepository
+from duo.endpoints.user.response.user_response import UserResponse
+from duo.endpoints.user.response.token_response import Token
+from duo.endpoints.user.model.user_model import UserModel
 
 from datetime import datetime, timedelta
 import pickle
@@ -31,13 +31,13 @@ class TestRedisSessionRepository(unittest.TestCase):
             ),
         )
 
-    @mock.patch('duo.repo.redis_session_repository.redis')
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository.redis')
     def test_class_instantiation(self, mock_redis):
         repo = RedisSessionRepository(mock_redis)
 
         self.assertIsInstance(repo, RedisSessionRepository)
 
-    @mock.patch('duo.repo.redis_session_repository.redis')
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository.redis')
     def test_get(self, mock_redis):
         repo = RedisSessionRepository(mock_redis)
 
@@ -49,7 +49,7 @@ class TestRedisSessionRepository(unittest.TestCase):
 
         self.assertIsNone(repo.get('session_id'))
 
-    @mock.patch('duo.repo.redis_session_repository.redis')
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository.redis')
     def test_add(self, mock_redis):
         repo = RedisSessionRepository(mock_redis)
 
@@ -57,7 +57,7 @@ class TestRedisSessionRepository(unittest.TestCase):
 
         self.assertTrue(mock_redis.set.called)
 
-    @mock.patch('duo.repo.redis_session_repository.redis')
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository.redis')
     def test_remove(self, mock_redis):
         repo = RedisSessionRepository(mock_redis)
 
@@ -65,7 +65,7 @@ class TestRedisSessionRepository(unittest.TestCase):
 
         self.assertTrue(mock_redis.delete.called)
 
-    @mock.patch('duo.repo.redis_session_repository.redis')
+    @mock.patch('duo.endpoints.session.repo.redis_session_repository.redis')
     def test_update(self, mock_redis):
         repo = RedisSessionRepository(mock_redis)
 

@@ -1,16 +1,16 @@
 from duo.depends.depends_product import get_product_service
 from duo.depends.depends_session import get_session_service
 from duo.depends.depends_user import get_user_service
-from duo.model.product_model import ProductModel
-from duo.service.product_service import ProductService
-from duo.service.session_service import SessionService
-from duo.service.user_service import UserService
+from duo.endpoints.product.model.product_model import ProductModel
+from duo.endpoints.product.service.product_service import ProductService
+from duo.endpoints.session.service.session_service import SessionService
+from duo.endpoints.user.service.user_service import UserService
 
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi import Depends, Request, Response
 from fastapi_utils.cbv import cbv
 
-from typing import Optional, List
+from typing import Optional
 
 product_router = InferringRouter()
 

@@ -1,8 +1,8 @@
-from duo.service.auth_service import AuthService
+from duo.auth.auth_service import AuthService
+from duo.endpoints.session.repo.redis_session_repository import RedisSessionRepository
 from duo.shared.exception.invalid_user_authentication_exception import InvalidUserAuthenticationException
-from duo.repo.redis_session_repository import RedisSessionRepository
-from duo.response.user.user_response import UserResponse
-from duo.enum.roles_enum import RoleEnum
+from duo.endpoints.user.response.user_response import UserResponse
+from duo.endpoints.user.entity.roles_enum import RoleEnum
 
 from fastapi import Request, Response
 from datetime import datetime

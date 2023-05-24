@@ -1,11 +1,13 @@
 from duo.depends.depends_user import get_auth_service
-from duo.repo.redis_session_repository import RedisSessionRepository
-from duo.service.session_service import SessionService
+from duo.endpoints.session.repo.redis_session_repository import RedisSessionRepository
+from duo.endpoints.session.service.session_service import SessionService
+
 
 from dotenv import load_dotenv
 from functools import cache
 import redis
 import os
+
 
 
 @cache

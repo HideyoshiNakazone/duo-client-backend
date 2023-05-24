@@ -1,6 +1,6 @@
 from duo.shared.exception.invalid_resource_exception import InvalidResourceException
-from duo.response.user.token_response import Token
-from duo.service.auth_service import AuthService
+from duo.endpoints.user.response.token_response import Token
+from duo.auth.auth_service import AuthService
 
 from datetime import datetime
 from unittest import mock
@@ -8,9 +8,9 @@ import unittest
 
 
 class TestAuthService(unittest.TestCase):
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
     def test_class_instantiation(self,
                                  mock_jwt_expiration,
                                  mock_jwt_algorithm,
@@ -18,9 +18,9 @@ class TestAuthService(unittest.TestCase):
         auth_service = AuthService()
         self.assertIsInstance(auth_service, AuthService)
 
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
     def test_generate_auth_token(self,
                                  mock_jwt_expiration,
                                  mock_jwt_algorithm,
@@ -37,9 +37,9 @@ class TestAuthService(unittest.TestCase):
         self.assertIsInstance(token.token, str)
         self.assertIsInstance(token.expiration, datetime)
 
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
     def test_generate_refresh_token(self,
                                     mock_jwt_expiration,
                                     mock_jwt_algorithm,
@@ -56,9 +56,9 @@ class TestAuthService(unittest.TestCase):
         self.assertIsInstance(token.token, str)
         self.assertIsInstance(token.expiration, datetime)
 
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
     def test_decode_auth_token_when_valid(self,
                                mock_jwt_expiration,
                                mock_jwt_algorithm,
@@ -77,9 +77,9 @@ class TestAuthService(unittest.TestCase):
 
         self.assertEqual(authenticated_user_id, user_id)
 
-    @mock.patch('duo.service.auth_service.get_jwt_secret', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_algorithm', spec=True)
-    @mock.patch('duo.service.auth_service.get_jwt_expiration', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_secret', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_algorithm', spec=True)
+    @mock.patch('duo.auth.auth_service.get_jwt_expiration', spec=True)
     def test_decode_auth_token_when_invalid(self,
                                mock_jwt_expiration,
                                mock_jwt_algorithm,
