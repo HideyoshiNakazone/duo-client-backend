@@ -1,20 +1,12 @@
 from duo.config.config_runner import ConfigRunner
-from duo.endpoints.product.controller.product_controller import product_router
-from duo.endpoints.session.controller.session_controller import session_router
-from duo.endpoints.user.controller.user_controller import user_router
+from duo.endpoints import app
 
-from fastapi import FastAPI
 import uvicorn
 
 
 def main():
 
     ConfigRunner.run()
-
-    app = FastAPI()
-    app.include_router(user_router)
-    app.include_router(session_router)
-    app.include_router(product_router)
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
